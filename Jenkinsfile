@@ -1,25 +1,39 @@
-pipeline{
-  agent any
-  stages{
-    stage("checkout")
-    {
-      steps{
-        checkout scm
-      }
-    }
+pipeline {
+    agent any
+    
+    stages {
+        stage("Checkout") {
+            steps {
+                // Checkout the source code from the repository
+                checkout scm
+            }
+        }
 
-    stage("Test")
-    {
-      steps{
-        sh 'sudo apt install npm'
-        sh 'npm test'
-      }
-    }
+        stage("Test") {
+            steps {
+                // Install npm dependencies and run tests
+                bat 'npm install'
+                bat 'npm test'
+            }
+        }
 
-    stage("Build"){
-      steps{
-        sh 'npm run build'
-      }
+        stage("Build") {
+            steps {
+                // Build the project
+                bat 'npm install'
+                bat 'npm run build'
+            }
+        }
     }
-  }
+    
+    post {
+        success {
+            echo 'Build successful!'
+            // Optionally, archive artifacts here
+        }
+        failure {
+            echo 'Build failed!'
+            // Optionally, send notifications or perform cleanup actions
+        }
+    }
 }
