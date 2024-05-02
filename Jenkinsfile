@@ -30,6 +30,7 @@ pipeline {
                 bat 'docker build -t my-node-app:1.0 .'
             }
         }
+    }
     
     post {
         success {
